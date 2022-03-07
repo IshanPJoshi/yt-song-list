@@ -1,0 +1,1 @@
+-- CREATE table IF NOT EXISTS --TABLE_NAME ();
