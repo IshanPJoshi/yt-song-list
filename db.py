@@ -22,7 +22,7 @@ def setup():
     global pool
     DATABASE_URL = os.environ['DATABASE_URL']
     current_app.logger.info(f"creating db connection pool")
-    pool = ThreadedConnectionPool(1, 100, dsn=DATABASE_URL, sslmode='require')
+    pool = ThreadedConnectionPool(1, 10, dsn=DATABASE_URL, sslmode='require')
 
 
 @contextmanager
@@ -47,12 +47,12 @@ def get_db_cursor(commit=False):
           cursor.close()
 
 def get_song_count():
-    with get_db_cursor() as curs:
+    with get_db_cursor(True) as curs:
         curs.execute("SELECT COUNT(*) FROM youtube_songs")
-    return curs.fetchone()[0]
+        return curs.fetchone()[0]
 
 def get_songs(page = 0):
     offset = page*LIMIT
-    with get_db_cursor() as cur:
+    with get_db_cursor(True) as cur:
         cur.execute("SELECT * FROM youtube_songs ORDER BY song_id DESC LIMIT %s OFFSET %s", (LIMIT, offset))
         return cur.fetchall()
