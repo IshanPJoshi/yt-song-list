@@ -1,1 +1,5 @@
 .env
+*.ipynb
+*.json
+*.csv
+*.pkl
