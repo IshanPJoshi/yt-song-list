@@ -16,6 +16,7 @@ from psycopg2.pool import ThreadedConnectionPool
 from psycopg2.extras import DictCursor
 
 pool = None
+LIMIT = 100
 
 def setup():
     global pool
@@ -45,3 +46,13 @@ def get_db_cursor(commit=False):
       finally:
           cursor.close()
 
+def get_song_count():
+    with get_db_cursor() as curs:
+        curs.execute("SELECT COUNT(*) FROM youtube_songs")
+    return curs.fetchone()[0]
+
+def get_songs(page = 0):
+    offset = page*LIMIT
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM youtube_songs ORDER BY song_id DESC LIMIT %s OFFSET %s", (LIMIT, offset))
+        return cur.fetchall()

@@ -8,5 +8,26 @@
 </head>
 <body>
     <h3>Welcome to my template</h3>
+    <table>
+        <thead>
+            <tr style="text-align: center;">
+              <th>row</th>
+              <th>songs</th>
+              <th>artist</th>
+              <th>channel</th>
+            </tr>
+          </thead>
+        <tbody>
+        {% for song in songs %}
+        <tr>
+        <th>{{song['song_id']}}</th>
+        <td><img loading=lazy src="{{song['thumbnail']}}" width="60" ></td>
+        <td><a href={{song['link']}} target="_blank">{{song['title']}}</a></td>
+        <td>{{song['channel']}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        
+    </table>
 </body>
 </html>
